@@ -1,10 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
+import RegisterPage from "../feature/auth/pages/RegisterPage";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <h1>Online Ticket Booking</h1>,
-  },
+
+
+const router=createBrowserRouter([
+
+
+{
+path:"/register",
+
+element:<RegisterPage/>
+
+}
+
+
 ]);
+
 
 export default router;
