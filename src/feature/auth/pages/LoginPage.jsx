@@ -562,7 +562,9 @@ name="email"
                   justify-between
                 ">
 
-                  <label className="
+                  <label
+                    htmlFor="password"
+                    className="
                     text-xs
                     font-semibold
                     uppercase
@@ -595,9 +597,7 @@ name="email"
                 <div className="relative">
 
 
-               <Input
-
-label="Password"
+                             <Input
 
 placeholder="Enter password"
 
@@ -789,7 +789,7 @@ name
 
 <div>
 
-<label className="
+{label && <label className="
 mb-2
 block
 text-xs
@@ -801,12 +801,14 @@ text-slate-300
 
 {label}
 
-</label>
+</label>}
 
 
 <input
 
 {...register(name)}
+
+id={name}
 
 type={type}
 
