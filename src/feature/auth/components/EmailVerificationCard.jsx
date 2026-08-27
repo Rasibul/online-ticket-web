@@ -14,7 +14,7 @@ useEffect(()=>{
 
     mutate(token);
  }
-}, [token]);
+}, [token, mutate]);
 
   useEffect(() => {
     if (!isSuccess) return undefined;
@@ -26,14 +26,12 @@ useEffect(()=>{
   const content = {
     pending: { eyebrow: "Checking your ticket", title: "Verifying your email", description: "We are confirming your details. This will only take a moment." },
     success: { eyebrow: "You are cleared for takeoff", title: "Email verified", description: "Your account is ready. Let’s find your next great route." },
-    error: { eyebrow: "This route is unavailable", title: "Verification failed", description:  error?.response?.data?.detail ||
-error?.message ||
-"Verification failed"|| "This link is invalid or has expired. Please try again." },
+    error: { eyebrow: "This route is unavailable", title: "Verification failed", description: error?.response?.data?.detail || error?.message || "This link is invalid or has expired. Please try again." },
   }[status];
 
   return (
-    <div className="rounded-[2rem] border border-white/10 bg-[#101b25]/95 p-7 text-center shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-11">
-      <div className={`mx-auto flex h-24 w-24 items-center justify-center rounded-[2rem] border ${status === "success" ? "border-lime-300/30 bg-lime-300/10" : status === "error" ? "border-rose-300/30 bg-rose-300/10" : "border-cyan-300/30 bg-cyan-300/10"}`}>
+    <div className="rounded-4xl border border-white/10 bg-[#101b25]/95 p-7 text-center shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-11">
+      <div className={`mx-auto flex h-24 w-24 items-center justify-center rounded-4xl border ${status === "success" ? "border-lime-300/30 bg-lime-300/10" : status === "error" ? "border-rose-300/30 bg-rose-300/10" : "border-cyan-300/30 bg-cyan-300/10"}`}>
         {status === "pending" && <div className="h-11 w-11 animate-spin rounded-full border-4 border-cyan-300 border-t-transparent" />}
         {status === "success" && <span className="text-5xl font-light text-lime-300">✓</span>}
         {status === "error" && <span className="text-4xl font-bold text-rose-300">!</span>}

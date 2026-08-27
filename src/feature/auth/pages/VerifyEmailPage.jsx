@@ -3,10 +3,10 @@ import EmailVerificationCard from "../components/EmailVerificationCard";
 const VerifyEmailPage = () => {
   return (
     <main className="min-h-screen overflow-hidden bg-[#08111a] text-white">
-      <div className="relative mx-auto flex min-h-screen max-w-[1440px] items-center px-4 py-8 sm:px-8 lg:px-14">
-        <div className="pointer-events-none absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(148,163,184,.07)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,.07)_1px,transparent_1px)] [background-size:56px_56px]" />
-        <div className="pointer-events-none absolute -left-48 top-1/4 h-[30rem] w-[30rem] rounded-full bg-cyan-400/10 blur-3xl" />
-        <div className="pointer-events-none absolute -right-48 bottom-0 h-[34rem] w-[34rem] rounded-full bg-lime-300/10 blur-3xl" />
+      <div className="relative mx-auto flex min-h-screen max-w-360 items-center px-4 py-8 sm:px-8 lg:px-14">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(148,163,184,.07)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,.07)_1px,transparent_1px)] bg-size-[56px_56px] opacity-60" />
+        <div className="pointer-events-none absolute -left-48 top-1/4 h-120 w-120 rounded-full bg-cyan-400/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-48 bottom-0 h-136 w-136 rounded-full bg-lime-300/10 blur-3xl" />
 
         <div className="relative z-10 grid w-full items-center gap-10 lg:grid-cols-[1fr_500px] lg:gap-20">
           <section className="hidden lg:block">
@@ -27,7 +27,7 @@ const VerifyEmailPage = () => {
             </div>
           </section>
 
-          <section className="mx-auto w-full max-w-[500px] lg:mx-0">
+          <section className="mx-auto w-full max-w-125 lg:mx-0">
             <div className="mb-7 flex items-center justify-between lg:hidden">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-lime-300 font-black text-[#0b171e]">TB</div>
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">TripBoard</span>
