@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import RegisterPage from "../feature/auth/pages/RegisterPage";
 import VerifyEmailPage from "../feature/auth/pages/VerifyEmailPage";
+import LoginPage from "../feature/auth/pages/LoginPage";
 
 
 
@@ -19,7 +20,7 @@ element:<VerifyEmailPage/>
 
 {
  path:"/login",
- element:<div>Login Page</div>
+ element:<div><LoginPage/></div>
 }
 
 
