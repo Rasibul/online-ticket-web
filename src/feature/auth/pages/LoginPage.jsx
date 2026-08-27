@@ -5,14 +5,107 @@ import {
 import {
   Link
 } from "react-router-dom";
+import {
+useForm
+} from "react-hook-form";
 
+
+import toast from "react-hot-toast";
+
+
+import {
+useNavigate
+} from "react-router-dom";
+
+
+import {
+useLogin
+} from "../hooks/useLogin";
+
+
+import {
+setTokens
+} from "../../../utils/token";
 
 const LoginPage = () => {
 
 
   const [showPassword,setShowPassword] = useState(false);
 
+const navigate = useNavigate();
 
+
+const {
+mutate,
+isPending
+}=useLogin();
+
+const {
+register,
+handleSubmit
+}=useForm();
+
+
+const onSubmit=(data)=>{
+
+
+mutate(data,{
+
+onSuccess:(response)=>{
+
+
+console.log(response);
+
+
+
+setTokens({
+
+accessToken:
+response.access_token,
+
+
+refreshToken:
+response.refresh_token
+
+
+});
+
+
+
+toast.success(
+"Login successful"
+);
+
+
+
+navigate("/dashboard");
+
+
+
+},
+
+
+
+
+onError:(error)=>{
+
+
+toast.error(
+
+error?.response?.data?.detail
+||
+"Invalid email or password"
+
+);
+
+
+}
+
+
+});
+
+
+};
 
   return (
 
@@ -438,17 +531,25 @@ const LoginPage = () => {
 
 
 
-            <form className="
-              space-y-5
-            ">
+           <form
+onSubmit={handleSubmit(onSubmit)}
+className="space-y-5"
+>
 
 
-              <Input
-                label="Email address"
-                placeholder="you@example.com"
-                type="email"
-              />
+           <Input
 
+label="Email address"
+
+placeholder="you@example.com"
+
+type="email"
+
+register={register}
+
+name="email"
+
+/>
 
 
 
@@ -494,33 +595,19 @@ const LoginPage = () => {
                 <div className="relative">
 
 
-                  <input
+               <Input
 
-                    type={
-                      showPassword
-                      ?
-                      "text"
-                      :
-                      "password"
-                    }
+label="Password"
 
-                    placeholder="Enter password"
+placeholder="Enter password"
 
-                    className="
-                    w-full
-                    rounded-xl
-                    border
-                    border-white/10
-                    bg-[#09131d]
-                    px-4
-                    py-3.5
-                    pr-12
-                    text-sm
-                    text-white
-                    outline-none
-                    focus:border-cyan-300
-                    "
-                  />
+type={showPassword ? "text" : "password"}
+
+register={register}
+
+name="password"
+
+/>
 
 
 
@@ -587,6 +674,10 @@ const LoginPage = () => {
 
               <button
 
+                type="submit"
+
+                disabled={isPending}
+
                 className="
                 w-full
                 rounded-xl
@@ -602,11 +693,21 @@ const LoginPage = () => {
                 hover:shadow-lg
 
                 hover:shadow-lime-300/20
+
+                disabled:cursor-wait
+
+                disabled:opacity-60
                 "
 
               >
 
-                Login
+               {
+isPending
+?
+"Signing in..."
+:
+"Login"
+}
 
               </button>
 
@@ -681,7 +782,9 @@ const LoginPage = () => {
 const Input = ({
 label,
 placeholder,
-type="text"
+type="text",
+register,
+name
 }) => (
 
 <div>
@@ -703,6 +806,8 @@ text-slate-300
 
 <input
 
+{...register(name)}
+
 type={type}
 
 placeholder={placeholder}
@@ -718,7 +823,6 @@ py-3.5
 text-sm
 text-white
 outline-none
-
 focus:border-cyan-300
 
 "
@@ -729,6 +833,5 @@ focus:border-cyan-300
 </div>
 
 )
-
 
 export default LoginPage;
