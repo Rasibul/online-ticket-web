@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../schemas/registerSchema";
 import { useRegister } from "../hooks/useRegister";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const transportModes = ["BUS", "TRAIN", "FLIGHT"];
 
@@ -12,8 +14,48 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(registerSchema) });
   const { mutate, isPending } = useRegister();
+  const navigate = useNavigate();
+ const onSubmit = (data)=>{
 
-  const onSubmit = (data) => mutate(data);
+
+  mutate(data,{
+
+    onSuccess:()=>{
+
+
+      toast.success(
+        "Account created! Please check your email for verification."
+      );
+
+
+      setTimeout(()=>{
+
+        navigate("/verify-email");
+
+      },1500);
+
+
+    },
+
+
+    onError:(error)=>{
+
+
+      toast.error(
+
+        error?.response?.data?.detail ||
+        "Registration failed"
+
+      );
+
+
+    }
+
+
+  });
+
+
+};
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#08111a] text-white">
