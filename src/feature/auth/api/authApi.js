@@ -16,6 +16,9 @@ export const registerUser = async(data)=>{
 
 
 
+
+
+
 export const verifyEmail = async(token)=>{
 
 
