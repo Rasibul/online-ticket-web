@@ -1,57 +1,366 @@
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useVerifyEmail } from "../hooks/useVerifyEmail";
+import {
+  useEffect,
+  useRef,
+  useState
+} from "react";
+
+import {
+  useNavigate,
+  useSearchParams
+} from "react-router-dom";
+
+import {
+  useVerifyEmail
+} from "../hooks/useVerifyEmail";
+
+
 
 const EmailVerificationCard = () => {
+
+
   const [searchParams] = useSearchParams();
+
   const navigate = useNavigate();
+
+
   const token = searchParams.get("token");
-  const { mutate, isSuccess, isError, error } = useVerifyEmail();
 
-useEffect(()=>{
 
- if(token){
+  const verificationStarted = useRef(false);
 
-    mutate(token);
- }
-}, [token, mutate]);
+
+  const [verified, setVerified] = useState(false);
+
+
+
+  const {
+    mutate,
+    isSuccess,
+    isError,
+    error
+  } = useVerifyEmail();
+
+
+
 
   useEffect(() => {
-    if (!isSuccess) return undefined;
-    const redirectTimer = setTimeout(() => navigate("/login"), 3000);
-    return () => clearTimeout(redirectTimer);
-  }, [isSuccess, navigate]);
 
-  const status = isSuccess ? "success" : isError || !token ? "error" : "pending";
+
+    if (
+      token &&
+      !verificationStarted.current
+    ) {
+
+
+      verificationStarted.current = true;
+
+
+      mutate(token, {
+
+        onSuccess: () => {
+
+          setVerified(true);
+
+        }
+
+      });
+
+
+    }
+
+
+  }, [token]);
+
+
+
+
+
+
+  useEffect(() => {
+
+
+    if (verified || isSuccess) {
+
+
+      const timer = setTimeout(() => {
+
+
+        navigate("/login");
+
+
+      }, 3000);
+
+
+
+      return () => clearTimeout(timer);
+
+
+    }
+
+
+  }, [
+    verified,
+    isSuccess,
+    navigate
+  ]);
+
+
+
+
+
+
+
+  const status =
+
+    verified || isSuccess
+
+      ? "success"
+
+      : isError
+
+      ? "error"
+
+      : "pending";
+
+
+
+
+
+
+
   const content = {
-    pending: { eyebrow: "Checking your ticket", title: "Verifying your email", description: "We are confirming your details. This will only take a moment." },
-    success: { eyebrow: "You are cleared for takeoff", title: "Email verified", description: "Your account is ready. Let’s find your next great route." },
-    error: { eyebrow: "This route is unavailable", title: "Verification failed", description: error?.response?.data?.detail || error?.message || "This link is invalid or has expired. Please try again." },
-  }[status];
+
+    pending: {
+
+      title: "Verifying your email",
+
+      description:
+        "Please wait while we confirm your account."
+
+    },
+
+
+    success: {
+
+      title: "Email verified",
+
+      description:
+        "Your account is ready. Redirecting to login..."
+
+    },
+
+
+    error: {
+
+      title: "Verification failed",
+
+      description:
+        error?.response?.data?.detail ||
+        "Invalid verification token"
+
+    }
+
+
+  };
+
+
+
+
+
 
   return (
-    <div className="rounded-4xl border border-white/10 bg-[#101b25]/95 p-7 text-center shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-11">
-      <div className={`mx-auto flex h-24 w-24 items-center justify-center rounded-4xl border ${status === "success" ? "border-lime-300/30 bg-lime-300/10" : status === "error" ? "border-rose-300/30 bg-rose-300/10" : "border-cyan-300/30 bg-cyan-300/10"}`}>
-        {status === "pending" && <div className="h-11 w-11 animate-spin rounded-full border-4 border-cyan-300 border-t-transparent" />}
-        {status === "success" && <span className="text-5xl font-light text-lime-300">✓</span>}
-        {status === "error" && <span className="text-4xl font-bold text-rose-300">!</span>}
+
+    <div
+      className="
+      rounded-[2rem]
+      border
+      border-white/10
+      bg-[#101b25]
+      p-10
+      text-center
+      shadow-2xl
+      "
+    >
+
+
+
+      <div
+        className={`
+        mx-auto
+        flex
+        h-24
+        w-24
+        items-center
+        justify-center
+        rounded-full
+
+        ${
+          status === "success"
+
+          ?
+
+          "bg-lime-300/10 text-lime-300"
+
+          :
+
+          status === "error"
+
+          ?
+
+          "bg-red-500/10 text-red-400"
+
+          :
+
+          "bg-cyan-300/10 text-cyan-300"
+
+        }
+
+        text-4xl
+        font-bold
+        `}
+      >
+
+
+        {
+          status === "success"
+
+          ?
+
+          "✓"
+
+          :
+
+          status === "error"
+
+          ?
+
+          "!"
+
+          :
+
+          <div
+            className="
+            h-10
+            w-10
+            animate-spin
+            rounded-full
+            border-4
+            border-cyan-300
+            border-t-transparent
+            "
+          />
+
+        }
+
+
       </div>
 
-      <p className={`mt-8 text-xs font-bold uppercase tracking-[0.24em] ${status === "error" ? "text-rose-300" : "text-cyan-300"}`}>{content.eyebrow}</p>
-      <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">{content.title}</h2>
-      <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-slate-400">{content.description}</p>
 
-      {status === "pending" && (
-        <div className="mt-9 h-1.5 overflow-hidden rounded-full bg-white/10"><div className="h-full w-2/3 animate-pulse rounded-full bg-cyan-300" /></div>
-      )}
-      {status === "success" && <p className="mt-8 text-xs text-slate-500">Taking you to login in a few seconds...</p>}
-      {status !== "pending" && (
-        <button type="button" onClick={() => navigate("/login")} className={`mt-8 w-full rounded-xl py-3.5 font-bold transition ${status === "success" ? "bg-lime-300 text-[#0b171e] hover:bg-lime-200" : "border border-white/10 text-white hover:bg-white/5"}`}>
-          {status === "success" ? "Continue to login  ->" : "Back to login"}
-        </button>
-      )}
+
+
+
+      <h2
+        className="
+        mt-8
+        text-3xl
+        font-black
+        text-white
+        "
+      >
+
+        {content[status].title}
+
+      </h2>
+
+
+
+
+
+      <p
+        className="
+        mt-4
+        text-sm
+        text-slate-400
+        "
+      >
+
+        {content[status].description}
+
+      </p>
+
+
+
+
+
+      {
+        status === "success" && (
+
+          <button
+
+            onClick={() => navigate("/login")}
+
+            className="
+            mt-8
+            w-full
+            rounded-xl
+            bg-lime-300
+            py-3.5
+            font-bold
+            text-black
+            hover:bg-lime-200
+            transition
+            "
+
+          >
+
+            Continue Login
+
+          </button>
+
+        )
+      }
+
+
+
+
+
+
+      {
+        status === "error" && (
+
+          <button
+
+            onClick={() => navigate("/register")}
+
+            className="
+            mt-8
+            w-full
+            rounded-xl
+            border
+            border-white/10
+            py-3.5
+            text-white
+            hover:bg-white/5
+            "
+
+          >
+
+            Back to Register
+
+          </button>
+
+        )
+      }
+
+
+
     </div>
+
   );
+
+
 };
+
+
 
 export default EmailVerificationCard;

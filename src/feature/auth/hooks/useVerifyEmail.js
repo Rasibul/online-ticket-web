@@ -1,24 +1,19 @@
-import {
-useMutation
-} from "@tanstack/react-query";
-
+import { useMutation } from "@tanstack/react-query";
 
 import {
-verifyEmail
+    verifyEmail
 } from "../api/authApi";
 
 
-
-export const useVerifyEmail = ()=>{
-
-
-return useMutation({
-
-mutationFn:
-verifyEmail
+export const useVerifyEmail = () => {
 
 
-});
+    return useMutation({
+
+        mutationFn: verifyEmail,
+
+
+    });
 
 
 };

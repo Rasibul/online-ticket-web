@@ -15,6 +15,11 @@ element:<RegisterPage/>
 {
 path:"/verify-email",
 element:<VerifyEmailPage/>
+},
+
+{
+ path:"/login",
+ element:<div>Login Page</div>
 }
 
 

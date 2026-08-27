@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../schemas/registerSchema";
 import { useRegister } from "../hooks/useRegister";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const transportModes = ["BUS", "TRAIN", "FLIGHT"];
@@ -14,7 +13,6 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(registerSchema) });
   const { mutate, isPending } = useRegister();
-  const navigate = useNavigate();
  const onSubmit = (data)=>{
 
 
@@ -30,7 +28,7 @@ const RegisterPage = () => {
 
       setTimeout(()=>{
 
-        navigate("/verify-email");
+        // navigate("/verify-email");
 
       },1500);
 
