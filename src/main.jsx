@@ -4,9 +4,8 @@ import { RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import router from "./app/router";
-import AppProviders from "./app/providers";
-
 import "./index.css";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 
 ReactDOM.createRoot(
@@ -14,7 +13,7 @@ ReactDOM.createRoot(
 ).render(
 
 
-    <AppProviders>
+  <AuthProvider>
       <RouterProvider router={router} />
       <Toaster
         position="top-right"
@@ -25,7 +24,7 @@ ReactDOM.createRoot(
           },
         }}
       />
-    </AppProviders>
+    </AuthProvider>
 
 
 
