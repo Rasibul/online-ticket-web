@@ -22,6 +22,9 @@ import {
 useLogin
 } from "../hooks/useLogin";
 
+import {
+useAuth
+} from "../../../context/useAuth";
 
 import {
 setTokens
@@ -33,6 +36,7 @@ const LoginPage = () => {
   const [showPassword,setShowPassword] = useState(false);
 
 const navigate = useNavigate();
+  const { setUser } = useAuth();
 
 
 const {
@@ -63,12 +67,13 @@ setTokens({
 accessToken:
 response.access_token,
 
-
 refreshToken:
 response.refresh_token
 
 
 });
+
+setUser({ authenticated: true });
 
 
 
@@ -83,7 +88,6 @@ navigate("/dashboard");
 
 
 },
-
 
 
 
