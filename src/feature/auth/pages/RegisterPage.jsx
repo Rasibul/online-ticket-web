@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../schemas/registerSchema";
 import { useRegister } from "../hooks/useRegister";
@@ -112,7 +113,7 @@ const RegisterPage = () => {
             </form>
 
             <p className="mt-7 text-center text-xs leading-5 text-slate-500">By continuing, you agree to our terms and privacy policy.</p>
-            <p className="mt-5 text-center text-sm text-slate-400">Already have an account? <button to="/login" type="button" className="ml-1 font-semibold text-lime-300 hover:text-lime-200">Log in</button></p>
+            <p className="mt-5 text-center text-sm text-slate-400">Already have an account? <Link to="/login" className="ml-1 font-semibold text-lime-300 hover:text-lime-200">Log in</Link></p>
           </section>
         </div>
       </div>
